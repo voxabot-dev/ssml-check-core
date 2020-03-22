@@ -552,16 +552,7 @@ const check_voice = (parent, index, errors, element, platform, locale) => {
   const attributes = Object.keys(element.attributes || {});
   // Attribute must be name
   attributes.forEach((attribute) => {
-    if (attribute === 'name') {
-      if (['Ivy', 'Joanna', 'Joey', 'Justin', 'Kendra', 'Kimberly', 'Matthew', 'Salli',
-          'Nicole', 'Russell', 'Amy', 'Brian', 'Emma', 'Aditi', 'Raveena',
-          'Hans', 'Marlene', 'Vicki', 'Conchita', 'Enrique',
-          'Carla', 'Giorgio', 'Mizuki', 'Takumi', 'Celine', 'Lea', 'Mathieu']
-        .indexOf(element.attributes.name) === -1) {
-        errors.push(createTagError(element, attribute));
-        element.attributes.name = 'Ivy';
-      }
-    } else {
+    if (attribute !== 'name') {
       // Invalid attribute
       errors.push(createTagError(element, attribute, true));
       element.attributes[attribute] = undefined;

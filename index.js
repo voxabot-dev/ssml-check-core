@@ -60,12 +60,15 @@ function checkForValidTagsRecursive(parent, index, errors, element, platform, lo
   const validTags = ['audio', 'break', 'emphasis', 'p', 'prosody', 's', 'say-as', 'speak', 'sub'];
   const validAmazonTags = ['amazon:effect', 'amazon:emotion', 'amazon:domain', 'lang', 'phoneme', 'voice', 'w'];
   const validGoogleTags = ['par', 'seq', 'media', 'desc'];
+  const validMicrosoftTags = ['voice'];
   let removedTag;
 
   if (element.name) {
-    if ((validTags.indexOf(element.name) === -1) &&
-      !(((platform === 'amazon') && (validAmazonTags.indexOf(element.name) !== -1)) ||
-      ((platform === 'google') && (validGoogleTags.indexOf(element.name) !== -1)))) {
+    if (validTags.indexOf(element.name) === -1 && !(
+      ((platform === 'amazon') && (validAmazonTags.indexOf(element.name) !== -1)) ||
+      ((platform === 'google') && (validGoogleTags.indexOf(element.name) !== -1)) ||
+      ((platform === 'microsoft') && (validMicrosoftTags.indexOf(element.name) !== -1))
+    )) {
       errors.push({type: 'tag', tag: element.name});
       if (element.elements) {
         parent.elements.splice(index, 1, ...element.elements);
@@ -106,7 +109,7 @@ function checkInternal(ssml, options, fix) {
     const userOptions = options || {};
     userOptions.platform = userOptions.platform || 'all';
 
-    if (['all', 'amazon', 'google'].indexOf(userOptions.platform) === -1) {
+    if (['all', 'amazon', 'google', 'microsoft'].indexOf(userOptions.platform) === -1) {
       errors.push({type: 'invalid platform'});
       return Promise.resolve({errors: errors});
     }

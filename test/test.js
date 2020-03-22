@@ -63,6 +63,9 @@ promises.push(runTest('Simple SSML', '<speak>Simple test</speak>', null, 'valid'
 promises.push(runTest('Whisper effect', '<speak><amazon:effect name="whispered">Simple test <break strength="medium"/> code</amazon:effect></speak>', {platform: 'amazon'}, 'valid'));
 promises.push(runTest('Whisper effect', '<speak><amazon:effect name="whispering">Simple test <break strength="medium"/> code</amazon:effect></speak>', {platform: 'amazon'}, 'amazon:effect tag has invalid name value whispering'));
 
+// Azure
+promises.push(runTest('Simple Azure SSML', '<speak version="1.0" xml:lang="en-US"><voice name="en-US-AriaRUS">Simple Azure test</voice></speak>', {platform: 'microsoft'}, 'valid'));
+
 // Amazon:emotion and amazom:domain
 promises.push(runTest('Valid emotion', '<speak><amazon:emotion name="excited" intensity="medium">Christina wins this round!</amazon:emotion></speak>', {platform: 'amazon', locale: 'en-US'}, 'valid'));
 promises.push(runTest('Valid emotion', '<speak><amazon:emotion name="disappointed" intensity="high">Here I am with a brain the size of a planet and they ask me to pick up a piece of paper.</amazon:emotion></speak>', {platform: 'amazon', locale: 'en-US'}, 'valid'));
@@ -132,7 +135,7 @@ promises.push(runTest('Invalid Google time', '<speak><say-as interpret-as="time"
 
 // voice tests
 promises.push(runTest('Valid voice', '<speak>I want to tell you a secret. <voice name="Kendra">I am not a real human.</voice>. Can you believe it?</speak>', {platform: 'amazon'}, 'valid'));
-promises.push(runTest('Valid voice', '<speak>I want to tell you a secret. <voice name="Samantha">I am not a real human.</voice>. Can you believe it?</speak>', {platform: 'amazon'}, 'voice tag has invalid name value Samantha'));
+promises.push(runTest('Valid voice', '<speak>I want to tell you a secret. <voice name="Samantha">I am not a real human.</voice>. Can you believe it?</speak>', {platform: 'amazon'}, 'valid'));
 
 // Media tests
 promises.push(runTest('Valid media', '<speak><seq><media begin="0.5s"><speak>Who invented the Internet?</speak></media><media begin="2.0s"><speak>The Internet was invented by cats.</speak></media><media soundLevel="-6dB"><audio src="https://actions.google.com/.../cartoon_boing.ogg"/></media><media repeatCount="3" soundLevel="+2.28dB" fadeInDur="2s" fadeOutDur="0.2s"><audio src="https://actions.google.com/.../cat_purr_close.ogg"/></media></seq> </speak>', {platform: 'google'}, 'valid'));
@@ -159,7 +162,6 @@ promises.push(runCorrection('Invalid prosody rate', '<speak><prosody rate="60">H
 promises.push(runCorrection('Invalid volume', '<speak><prosody pokemon="pikachu" volume="louder">Hello <break time="200ms"/> world</prosody></speak>', null, '<speak><prosody volume="+0dB">Hello <break time="200ms"/> world</prosody></speak>'));
 promises.push(runCorrection('Whisper effect', '<speak><amazon:effect>Simple test <break strength="medium"/> code</amazon:effect></speak>', {platform: 'amazon'}, '<speak><amazon:effect name="whispered">Simple test <break strength="medium"/> code</amazon:effect></speak>'));
 promises.push(runCorrection('Invalid tag', '<speak><tag>What is this?</tag><break time="20000ms"/>This & that</speak>', null, '<speak>What is this?<break time="10s"/>This &amp; that</speak>'));
-promises.push(runCorrection('Correct voice', '<speak>I want to tell you a secret. <voice name="Samantha">I am not a real human.</voice>. Can you believe it?</speak>', {platform: 'amazon'}, '<speak>I want to tell you a secret. <voice name="Ivy">I am not a real human.</voice>. Can you believe it?</speak>'));
 promises.push(runCorrection('Correct say-as all', '<speak><say-as interpret-as="bleep">Wow</say-as></speak>', {platform: 'all'}, '<speak><say-as interpret-as="cardinal">Wow</say-as></speak>'));
 promises.push(runCorrection('Invalid Google speed', '<speak><audio speed="140" src="https://actions.google.com/sounds/v1/animals/cat_purr_close.ogg"><desc>a cat purring</desc>PURR (sound didn\'t load)</audio></speak>', {platform: 'google'}, '<speak><audio speed="140%" src="https://actions.google.com/sounds/v1/animals/cat_purr_close.ogg"><desc>a cat purring</desc>PURR (sound didn\'t load)</audio></speak>'));
 promises.push(runCorrection('Prosody invalid', '<speak><prosody rate="slow" pitch="soft">Come in!<break time="0.5"/>Welcome to the terrifying world of the imagination.</prosody></speak>', {platform: 'google'}, '<speak><prosody rate="slow" pitch="+0%">Come in!<break time="0.5"/>Welcome to the terrifying world of the imagination.</prosody></speak>'));
